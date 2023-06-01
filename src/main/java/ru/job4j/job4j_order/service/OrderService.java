@@ -1,6 +1,7 @@
 package ru.job4j.job4j_order.service;
 
 import ru.job4j.job4j_order.model.Order;
+import ru.job4j.job4j_order.model.OrderDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,4 +12,5 @@ public interface OrderService {
     Optional<Order> findById(int id);
     boolean update(int id, Order order);
     boolean deleteById(int id);
+    OrderDTO findOrderDTO(int id);
 }

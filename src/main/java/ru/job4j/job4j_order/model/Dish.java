@@ -2,12 +2,12 @@ package ru.job4j.job4j_order.model;
 
 import java.util.Objects;
 
-public class DishDTO {
+public class Dish {
     private int id;
     private String name;
     private String description;
 
-    public DishDTO() {
+    public Dish() {
     }
 
     public int getId() {
@@ -38,8 +38,8 @@ public class DishDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DishDTO dishDTO = (DishDTO) o;
-        return id == dishDTO.id;
+        Dish dish = (Dish) o;
+        return id == dish.id;
     }
 
     @Override

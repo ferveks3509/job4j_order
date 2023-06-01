@@ -4,12 +4,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.job4j_order.model.Order;
+import ru.job4j.job4j_order.model.OrderDTO;
 import ru.job4j.job4j_order.service.OrderService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("/orders")
 public class OrderController {
     private final OrderService orderService;
 
@@ -23,7 +24,7 @@ public class OrderController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Order> create(Order order) {
+    public ResponseEntity<Order> create(@RequestBody Order order) {
         return new ResponseEntity<>(
                 orderService.create(order),
                 HttpStatus.CREATED
@@ -49,5 +50,17 @@ public class OrderController {
     public ResponseEntity<Void> delete(@PathVariable int id) {
         var delete = orderService.deleteById(id);
         return new ResponseEntity<>(delete ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/order/{id}")
+    public ResponseEntity<OrderDTO> findByIdOrderDTO(@PathVariable int id) {
+        var order = orderService.findById(id);
+        if (order.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(
+                orderService.findOrderDTO(order.get().getId()),
+                HttpStatus.OK);
     }
 }

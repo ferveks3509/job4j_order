@@ -1,12 +1,19 @@
 package ru.job4j.job4j_order.model;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "orders")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @JoinColumn(name = "order_name")
     private String orderName;
+    @JoinColumn(name = "dish_id")
     private int dishId;
-    private int customerId;
     private Boolean status;
 
     public Order() {
@@ -15,7 +22,6 @@ public class Order {
     public Order(String orderName, int dishId, int customerId, Boolean status) {
         this.orderName = orderName;
         this.dishId = dishId;
-        this.customerId = customerId;
         this.status = status;
     }
 
@@ -41,14 +47,6 @@ public class Order {
 
     public void setDishId(int dishId) {
         this.dishId = dishId;
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
     }
 
     public Boolean getStatus() {

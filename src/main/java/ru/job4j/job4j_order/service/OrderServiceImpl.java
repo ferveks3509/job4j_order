@@ -2,6 +2,8 @@ package ru.job4j.job4j_order.service;
 
 import org.springframework.stereotype.Service;
 import ru.job4j.job4j_order.model.Order;
+import ru.job4j.job4j_order.model.OrderDTO;
+import ru.job4j.job4j_order.repository.APIDishRepository;
 import ru.job4j.job4j_order.repository.OrderRepository;
 
 import java.util.List;
@@ -10,9 +12,11 @@ import java.util.Optional;
 @Service
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final APIDishRepository apiDishRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, APIDishRepository apiDishRepository) {
         this.orderRepository = orderRepository;
+        this.apiDishRepository = apiDishRepository;
     }
 
     @Override
@@ -48,5 +52,14 @@ public class OrderServiceImpl implements OrderService {
             result = true;
         }
         return result;
+    }
+
+    @Override
+    public OrderDTO findOrderDTO(int id) {
+        Order order = findById(id).get();
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setOrder(order);
+        orderDTO.setDish(apiDishRepository.findById(order.getDishId()));
+        return orderDTO;
     }
 }
