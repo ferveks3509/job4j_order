@@ -1,5 +1,6 @@
 package ru.job4j.job4j_order.service;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.job4j.job4j_order.model.Order;
 import ru.job4j.job4j_order.model.OrderDTO;
@@ -11,10 +12,12 @@ import java.util.Optional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+    private final KafkaTemplate<String, Object> kafkaTemplate;
     private final OrderRepository orderRepository;
     private final APIDishRepository apiDishRepository;
 
-    public OrderServiceImpl(OrderRepository orderRepository, APIDishRepository apiDishRepository) {
+    public OrderServiceImpl(KafkaTemplate<String, Object> kafkaTemplate, OrderRepository orderRepository, APIDishRepository apiDishRepository) {
+        this.kafkaTemplate = kafkaTemplate;
         this.orderRepository = orderRepository;
         this.apiDishRepository = apiDishRepository;
     }
@@ -26,7 +29,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order order) {
-        return orderRepository.save(order);
+        var saveOrder = orderRepository.save(order);
+        kafkaTemplate.send("job4j_orders", saveOrder);
+        return saveOrder;
     }
 
     @Override
