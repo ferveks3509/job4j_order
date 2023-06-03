@@ -33,7 +33,7 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Status.created);
         var saveOrder = orderRepository.save(order);
         kafkaTemplate.send("preOrder", saveOrder);
-        kafkaTemplate.send("statusDish", saveOrder.getStatus());
+        kafkaTemplate.send("statusDish", saveOrder.getStatus().name());
         return saveOrder;
     }
 
