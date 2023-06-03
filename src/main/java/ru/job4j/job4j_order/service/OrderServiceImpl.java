@@ -4,6 +4,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.job4j.job4j_order.model.Order;
 import ru.job4j.job4j_order.model.OrderDTO;
+import ru.job4j.job4j_order.model.Status;
 import ru.job4j.job4j_order.repository.APIDishRepository;
 import ru.job4j.job4j_order.repository.OrderRepository;
 
@@ -29,8 +30,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order create(Order order) {
+        order.setStatus(Status.created);
         var saveOrder = orderRepository.save(order);
-        kafkaTemplate.send("job4j_orders", saveOrder);
+        kafkaTemplate.send("preOrder", saveOrder);
+        kafkaTemplate.send("statusDish", saveOrder.getStatus());
         return saveOrder;
     }
 

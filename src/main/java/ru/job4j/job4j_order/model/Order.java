@@ -14,12 +14,18 @@ public class Order {
     private String orderName;
     @JoinColumn(name = "dish_id")
     private int dishId;
-    private Boolean status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     public Order() {
     }
 
-    public Order(String orderName, int dishId, int customerId, Boolean status) {
+    public Order(String orderName, int dishId) {
+        this.orderName = orderName;
+        this.dishId = dishId;
+    }
+
+    public Order(String orderName, int dishId, Status status) {
         this.orderName = orderName;
         this.dishId = dishId;
         this.status = status;
@@ -49,11 +55,11 @@ public class Order {
         this.dishId = dishId;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
