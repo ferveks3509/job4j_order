@@ -1,7 +1,7 @@
 package ru.job4j.job4j_order.service;
 
 import ru.job4j.job4j_order.model.Order;
-import ru.job4j.job4j_order.model.OrderDTO;
+import ru.job4j.job4j_order.dto.OrderDTO;
 
 import java.util.List;
 import java.util.Optional;

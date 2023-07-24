@@ -1,4 +1,7 @@
-package ru.job4j.job4j_order.model;
+package ru.job4j.job4j_order.dto;
+
+import ru.job4j.job4j_order.model.Dish;
+import ru.job4j.job4j_order.model.Order;
 
 public class OrderDTO {
     private Order order;

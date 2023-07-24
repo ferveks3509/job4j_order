@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.job4j_order.model.Order;
-import ru.job4j.job4j_order.model.OrderDTO;
+import ru.job4j.job4j_order.dto.OrderDTO;
 import ru.job4j.job4j_order.service.OrderService;
 
 import java.util.List;

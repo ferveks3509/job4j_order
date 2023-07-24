@@ -4,7 +4,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.job4j.job4j_order.model.Notification;
 import ru.job4j.job4j_order.model.Order;
-import ru.job4j.job4j_order.model.OrderDTO;
+import ru.job4j.job4j_order.dto.OrderDTO;
 import ru.job4j.job4j_order.model.Status;
 import ru.job4j.job4j_order.repository.APIDishRepository;
 import ru.job4j.job4j_order.repository.OrderRepository;
