@@ -1,6 +1,7 @@
-create table orders(
-    id serial primary key,
-    order_name varchar,
-    dish_id integer,
-    status boolean
+CREATE TABLE IF NOT EXISTS orders
+(
+    id      SERIAL PRIMARY KEY,
+    name    VARCHAR,
+    dish_id TEXT,
+    status  VARCHAR
 );

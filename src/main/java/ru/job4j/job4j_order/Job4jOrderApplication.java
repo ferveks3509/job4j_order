@@ -9,5 +9,4 @@ public class Job4jOrderApplication {
     public static void main(String[] args) {
         SpringApplication.run(Job4jOrderApplication.class, args);
     }
-
 }

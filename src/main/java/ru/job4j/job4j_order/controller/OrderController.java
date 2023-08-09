@@ -20,11 +20,11 @@ public class OrderController {
 
     @GetMapping("/")
     public List<Order> findAll() {
-        return orderService.findAll();
+        return (List<Order>) orderService.findAll();
     }
 
     @PostMapping("/")
-    public ResponseEntity<Order> create(@RequestBody Order order) {
+    public ResponseEntity<OrderDTO> create(@RequestBody Order order) {
         return new ResponseEntity<>(
                 orderService.create(order),
                 HttpStatus.CREATED

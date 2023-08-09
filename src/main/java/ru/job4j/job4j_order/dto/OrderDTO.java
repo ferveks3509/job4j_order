@@ -1,33 +1,44 @@
 package ru.job4j.job4j_order.dto;
 
 import ru.job4j.job4j_order.model.Dish;
-import ru.job4j.job4j_order.model.Order;
+
+import java.util.List;
 
 public class OrderDTO {
-    private Order order;
-    private Dish dish;
-
-    public Order getOrder() {
-        return order;
-    }
+    private int id;
+    private String name;
+    private List<Dish> dishes;
 
     public OrderDTO() {
     }
 
-    public OrderDTO(Order order, Dish dish) {
-        this.order = order;
-        this.dish = dish;
+    public OrderDTO(int id, String name, List<Dish> dishes) {
+        this.id = id;
+        this.name = name;
+        this.dishes = dishes;
     }
 
-    public void setOrder(Order order) {
-        this.order = order;
+    public String getName() {
+        return name;
     }
 
-    public Dish getDish() {
-        return dish;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setDish(Dish dish) {
-        this.dish = dish;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<Dish> getDishes() {
+        return dishes;
+    }
+
+    public void setDishes(List<Dish> dishes) {
+        this.dishes = dishes;
     }
 }

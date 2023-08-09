@@ -2,13 +2,15 @@ package ru.job4j.job4j_order.service;
 
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import ru.job4j.job4j_order.client.APIDishRepository;
+import ru.job4j.job4j_order.dto.OrderDTO;
+import ru.job4j.job4j_order.model.Dish;
 import ru.job4j.job4j_order.model.Notification;
 import ru.job4j.job4j_order.model.Order;
-import ru.job4j.job4j_order.dto.OrderDTO;
 import ru.job4j.job4j_order.model.Status;
-import ru.job4j.job4j_order.repository.APIDishRepository;
 import ru.job4j.job4j_order.repository.OrderRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +20,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final APIDishRepository apiDishRepository;
 
-    public OrderServiceImpl(KafkaTemplate<String, Object> kafkaTemplate, OrderRepository orderRepository, APIDishRepository apiDishRepository) {
+    public OrderServiceImpl(KafkaTemplate<String, Object> kafkaTemplate, OrderRepository orderRepository,
+                            APIDishRepository apiDishRepository) {
         this.kafkaTemplate = kafkaTemplate;
         this.orderRepository = orderRepository;
         this.apiDishRepository = apiDishRepository;
@@ -30,19 +33,41 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order create(Order order) {
+    public OrderDTO create(Order order) {
         Notification notification = new Notification();
         order.setStatus(Status.created);
         var saveOrder = orderRepository.save(order);
         notification.setStatus(order.getStatus().name());
-        kafkaTemplate.send("preOrder", saveOrder);
-        kafkaTemplate.send("statusDish", notification);
-        return saveOrder;
+
+        //kafkaTemplate.send("preOrder", saveOrder);
+        //kafkaTemplate.send("statusDish", notification);
+        return convertToOrderDTO(saveOrder);
+    }
+
+    private OrderDTO convertToOrderDTO(Order order) {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(order.getId());
+        orderDTO.setName(order.getName());
+        String[] dishId = order.getDishId().split(",");
+        orderDTO.setDishes(convertToList(dishId));
+        return orderDTO;
+    }
+
+    private List<Dish> convertToList(String[] dishId) {
+        List<Dish> dishes = new ArrayList<>();
+        for(String id : dishId) {
+            int dishIdInt = Integer.parseInt(id);
+            Dish dish = apiDishRepository.findById(dishIdInt);
+            if (dish != null) {
+                dishes.add(dish);
+            }
+        }
+        return dishes;
     }
 
     @Override
     public Optional<Order> findById(int id) {
-       return orderRepository.findById(id);
+        return orderRepository.findById(id);
     }
 
     @Override
@@ -67,10 +92,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDTO findOrderDTO(int id) {
-        Order order = findById(id).get();
+        Order order = findById(id).orElseThrow();
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setOrder(order);
-        orderDTO.setDish(apiDishRepository.findById(order.getDishId()));
+        //orderDTO.setOrder(order);
+        //orderDTO.setDish(apiDishRepository.findById(order.getDishes()));
         return orderDTO;
     }
+
 }
