@@ -38,8 +38,7 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Status.created);
         var saveOrder = orderRepository.save(order);
         notification.setStatus(order.getStatus().name());
-
-        //kafkaTemplate.send("preOrder", saveOrder);
+        //kafkaTemplate.send("order", saveOrder);
         //kafkaTemplate.send("statusDish", notification);
         return convertToOrderDTO(saveOrder);
     }
@@ -93,10 +92,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDTO findOrderDTO(int id) {
         Order order = findById(id).orElseThrow();
-        OrderDTO orderDTO = new OrderDTO();
-        //orderDTO.setOrder(order);
-        //orderDTO.setDish(apiDishRepository.findById(order.getDishes()));
-        return orderDTO;
+        return convertToOrderDTO(order);
     }
-
 }
