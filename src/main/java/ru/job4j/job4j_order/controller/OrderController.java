@@ -1,10 +1,11 @@
 package ru.job4j.job4j_order.controller;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.job4j.job4j_order.model.Order;
 import ru.job4j.job4j_order.dto.OrderDTO;
+import ru.job4j.job4j_order.model.Order;
 import ru.job4j.job4j_order.service.OrderService;
 
 import java.util.List;
@@ -62,5 +63,12 @@ public class OrderController {
         return new ResponseEntity<>(
                 orderService.findOrderDTO(order.get().getId()),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/pages")
+    public List<Order> findByPages(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "5") int size) {
+        return orderService.findByPageRequest(PageRequest.of(page, size));
     }
 }

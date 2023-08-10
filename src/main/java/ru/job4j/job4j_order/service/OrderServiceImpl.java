@@ -1,5 +1,7 @@
 package ru.job4j.job4j_order.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import ru.job4j.job4j_order.client.APIDishRepository;
@@ -93,5 +95,11 @@ public class OrderServiceImpl implements OrderService {
     public OrderDTO findOrderDTO(int id) {
         Order order = findById(id).orElseThrow();
         return convertToOrderDTO(order);
+    }
+    @Override
+    public List<Order> findByPageRequest(PageRequest pageRequest) {
+        //Page<Order> page = orderRepository.findByPageRequest(pageRequest);
+        //return page.getContent();
+        return orderRepository.findByPageRequest(pageRequest);
     }
 }
