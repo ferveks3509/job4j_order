@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
-import ru.job4j.job4j_order.model.Notification;
 
 import java.util.HashMap;
 import java.util.Map;
